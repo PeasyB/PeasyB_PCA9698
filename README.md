@@ -25,7 +25,7 @@ void loop() {
 Download this repository as a ZIP and choose **Sketch → Include Library → Add .ZIP Library**, or clone it into the Arduino libraries directory:
 
 ```bash
-git clone https://github.com/PeasyB/PeasyB_PCA9698_Library.git ~/Arduino/libraries/PeasyB_PCA9698_Library
+git clone https://github.com/PeasyB/PeasyB_PCA9698.git ~/Arduino/libraries/PeasyB_PCA9698
 ```
 
 ## What you need to know before the first write
