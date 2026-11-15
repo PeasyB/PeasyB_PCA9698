@@ -82,7 +82,7 @@ PeasyB_PCA9698 gpio(addr);
 
 ## Using it
 
-Start the I²C peripheral yourself, on the pins your board uses for the bus, and choose the clock. `begin()` does not call `Wire.begin()`, so pin selection stays in the sketch.
+Start the I²C peripheral yourself, on the SDA and SCL pins your microcontroller uses, and choose the clock. `begin()` does not call `Wire.begin()`.
 
 ```cpp
 Wire.begin();
@@ -126,12 +126,16 @@ Direction and mask bytes use the datasheet polarity. A 1 in a direction byte is 
 
 ## RESET, OE, and INT
 
-Pass the host GPIO numbers wired to those pins. The numbers belong to the sketch, not the library.
+These three pins are optional. I²C works without them. When you wire one to a GPIO on your microcontroller, pass that Arduino pin number. In the example below, RESET is on pin 4 of the microcontroller; use the numbers from your own wiring.
 
 ```cpp
-gpio.useResetPin(RESET_PIN);       // held high; hardReset() pulses it low
-gpio.useOePin(OE_PIN);             // outputs enabled, using the current polarity
-gpio.useInterruptPin(INT_PIN);     // input; add true to turn on an internal pull-up
+const uint8_t RESET_PIN = 4;          // microcontroller pin wired to RESET
+const uint8_t OE_PIN = 5;             // microcontroller pin wired to OE
+const uint8_t INT_PIN = 6;            // microcontroller pin wired to INT
+
+gpio.useResetPin(RESET_PIN);          // held high; hardReset() pulses it low
+gpio.useOePin(OE_PIN);                // outputs enabled, using the current polarity
+gpio.useInterruptPin(INT_PIN);        // input; add true to turn on an internal pull-up
 
 gpio.enableOutputs(false);         // tri-state every output
 gpio.hardReset();                  // pulse RESET, then re-read the registers
@@ -150,7 +154,7 @@ Connect each pin **directly** to a GPIO. Put the 10 kΩ resistor from the pin to
 
 | Pin | Direction | Resistor | Why |
 | --- | --- | --- | --- |
-| INT | Open-drain output, active low | 10 kΩ to 3.3 V | The chip can only pull low. A host GPIO pull-up works too, if that pin has one. |
+| INT | Open-drain output, active low | 10 kΩ to 3.3 V | The chip can only pull low. An internal pull-up on the microcontroller pin works too, if that pin has one. |
 | RESET | Input, active low | 10 kΩ to 3.3 V | Stays out of reset while the GPIO is high-Z during boot. Drive the GPIO low to reset. |
 | OE | Input, active low by default | 10 kΩ to GND | Outputs stay enabled if the GPIO is high-Z. Drive the GPIO high to tri-state them. Use a pull-up instead if the outputs should stay off until software enables them. |
 
