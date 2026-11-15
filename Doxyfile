@@ -1,6 +1,6 @@
-PROJECT_NAME           = "PeasyB PCA9698"
+PROJECT_NAME           = "PeasyB_PCA9698"
 PROJECT_BRIEF          = "Arduino library for the NXP PCA9698 40-bit I2C GPIO expander"
-PROJECT_NUMBER         = 1.0.0
+PROJECT_NUMBER         = 1.0.1
 OUTPUT_DIRECTORY       = docs/doxygen
 STRIP_FROM_PATH        = .
 INPUT                  = src README.md

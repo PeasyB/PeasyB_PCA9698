@@ -1,5 +1,5 @@
 #######################################
-# Syntax coloring for the PeasyB PCA9698 library
+# Syntax coloring for the PeasyB_PCA9698 library
 #######################################
 
 PeasyB_PCA9698	KEYWORD1

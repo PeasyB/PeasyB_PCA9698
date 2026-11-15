@@ -1,4 +1,4 @@
-# PeasyB PCA9698
+# PeasyB_PCA9698
 
 Arduino library for the [NXP PCA9698](https://www.nxp.com/docs/en/data-sheet/PCA9698.pdf), a 40-bit Fast-mode Plus I²C GPIO expander. The API is modelled on the Adafruit MCP23X17 library, so `pinMode`, `digitalRead`, and `digitalWrite` behave the way they do there. On top of that it covers the PCA9698 itself: open-drain outputs, per-pin interrupt masks, polarity inversion, and banks that change together on I²C STOP.
 
