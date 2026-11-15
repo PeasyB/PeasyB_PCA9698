@@ -22,18 +22,16 @@ void loop() {
 
 ## Install
 
-The published copy of this library is [PeasyB_PCA9698_Library](https://github.com/PeasyB/PeasyB_PCA9698_Library). Download that repository as a ZIP and choose **Sketch → Include Library → Add .ZIP Library**, or clone it into the Arduino libraries directory:
+Download this repository as a ZIP and choose **Sketch → Include Library → Add .ZIP Library**, or clone it into the Arduino libraries directory:
 
 ```bash
 git clone https://github.com/PeasyB/PeasyB_PCA9698_Library.git ~/Arduino/libraries/PeasyB_PCA9698_Library
 ```
 
-The same sources are also in the [breakout repository](https://github.com/PeasyB/PCA9698-Breakout), in the `PeasyB_PCA9698_Library` folder. Copy that folder into `libraries` if you already have the board files checked out. The library does not require that board.
-
 ## What you need to know before the first write
 
 - **OE gates every output.** After power-up, OE is active-low. Hold OE at GND, or call `setOeActiveHigh(true)` and hold OE high. A floating OE pin leaves every output high-impedance, and `digitalWrite()` will look like it did nothing.
-- **There are no internal pull-ups.** `pinMode(pin, INPUT_PULLUP)` returns false. Fit the resistor on the board.
+- **There are no internal pull-ups.** `pinMode(pin, INPUT_PULLUP)` returns false. Add an external resistor.
 - **Addresses in `Wire` are 7-bit.** The datasheet prints the 8-bit write address (0x40 when all AD pins are GND). This library, like the rest of Arduino, uses 0x20 for that strap. `addressFor()` converts any AD2/AD1/AD0 combination.
 - **INT is open-drain and active-low**, and it is masked off until you call `setInterrupt()`. Reading an input bank clears the interrupt for that whole bank.
 - **Output drive is shared.** Bank 0 is programmed in pairs (IO0_0 with IO0_1, and so on). Banks 1–4 have one drive setting each. The power-up drive is totem-pole.
@@ -158,7 +156,7 @@ Connect each pin **directly** to a GPIO. Put the 10 kΩ resistor from the pin to
 | RESET | Input, active low | 10 kΩ to 3.3 V | Stays out of reset while the GPIO is high-Z during boot. Drive the GPIO low to reset. |
 | OE | Input, active low by default | 10 kΩ to GND | Outputs stay enabled if the GPIO is high-Z. Drive the GPIO high to tri-state them. Use a pull-up instead if the outputs should stay off until software enables them. |
 
-A series 10 kΩ only slows the edge. It does not replace the pull resistor on INT. A pull of about 10 kΩ to the idle rail is weak enough that the host GPIO can override it, so the switch or resistor can stay in the idle position while software drives the pin.
+A series 10 kΩ only slows the edge. It does not replace the pull resistor on INT. A pull of about 10 kΩ to the idle rail is weak enough that the microcontroller GPIO can override it.
 
 ## Examples
 
@@ -188,10 +186,6 @@ The HTML lands in `docs/doxygen`. That directory is generated output.
 | `library.properties` | Arduino Library Manager metadata. |
 | `keywords.txt` | IDE highlighting. |
 | `examples/` | Blink, button, banks, and the RESET / OE / INT sketch. |
-
-## Hardware check
-
-Version 1.0.0 was run on a PCA9698DGG at 7-bit address 0x20 and 100 kHz. That pass covered pin reads and writes, polarity, open-drain, OE in both polarities, RESET, interrupt mask and clear, the SMBus alert response, GPIO All Call, and releasing an ALLBNK force. Output-change-on-STOP follows the datasheet; the ACK-versus-STOP edge itself is not visible from these calls, because each one ends the I²C transaction before it returns.
 
 ## License
 
